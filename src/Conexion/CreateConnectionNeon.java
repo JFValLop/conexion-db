@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class CreateConnection {
+public class CreateConnectionNeon {
 
     private Properties config = new Properties();
 
@@ -21,8 +21,8 @@ public class CreateConnection {
     private String username;
     private String password;
 
-    public CreateConnection() {
-        String path = "src/Conexion/db_config.properties";
+    public CreateConnectionNeon() {
+        String path = "src/Conexion/db_config_neon.properties";
         try (InputStream in = Files.newInputStream(Paths.get(path))) {
             config.load(in);
             loadProperties();
@@ -42,11 +42,13 @@ public class CreateConnection {
     public Connection getConnection() {
         Connection conn = null;
         try {
-            String jdbcUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + database + "?sslmode=disable";
+            // Neon requiere SSL obligatorio
+            String jdbcUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + database
+                    + "?sslmode=require";
             conn = DriverManager.getConnection(jdbcUrl, username, password);
-            System.out.println("Conexion establecida");
+            System.out.println("Conexion establecida con Neon");
         } catch (SQLException ex) {
-            Logger.getLogger(CreateConnection.class.getName()).log(Level.SEVERE, "Error de SQL", ex);
+            Logger.getLogger(CreateConnectionNeon.class.getName()).log(Level.SEVERE, "Error de SQL", ex);
         }
         return conn;
     }
