@@ -42,9 +42,11 @@ public class CreateConnection {
     public Connection getConnection() {
         Connection conn = null;
         try {
-            String jdbcUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + database + "?sslmode=disable";
+            // Neon requiere SSL obligatorio
+            String jdbcUrl = "jdbc:postgresql://" + hostname + ":" + port + "/" + database
+                    + "?sslmode=require";
             conn = DriverManager.getConnection(jdbcUrl, username, password);
-            System.out.println("Conexion establecida");
+            System.out.println("Conexion establecida con Neon");
         } catch (SQLException ex) {
             Logger.getLogger(CreateConnection.class.getName()).log(Level.SEVERE, "Error de SQL", ex);
         }
